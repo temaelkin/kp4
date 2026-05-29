@@ -9,10 +9,6 @@ import (
 	"github.com/google/uuid"
 )
 
-type Response struct {
-	Message string `json:"message"`
-}
-
 type ReverseRequest struct {
 	Text string `json:"text"`
 }
