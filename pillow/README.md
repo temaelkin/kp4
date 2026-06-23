@@ -5,9 +5,13 @@ ___
 Начнем с создания токена на huggingface.
 Далее настроим виртуальное окружение для тестового проекта по генерации изображения, установим библиотеки PIL и huggingface_hub.
 По данному в задании промпту попросим GigaCode в режиме агента написать код для генерации тестового изображения.
-![[prompt_request.png]]
+
+![prompt_request](images/prompt_request.png)
+
 Выполняем написанный код и получаем изображение.
-![[generated_image.png]]
+
+![generated_image](images/generated_image.png)
+
 # Часть 2
 На руках у нас есть формулировка основного задания и требования к выполнению. Просим ChatGPT написать промпт по тексту задания:
 ```
@@ -235,13 +239,21 @@ width и height должны быть кратны 32
 # Часть 3
 Установим через pip библиотеки flask и dotenv.
 Добавим наш токен в .env файл и запустим приложение в первый раз.
-![[app_front_page.png]]
+
+![app_front_page](images/app_front_page.png)
+
 Находим первую проблему сгенерированного кода.
-![[error_one.png]]
+
+![error_one](images/error_one.png)
+
 Это очевидно, так как GigaCode придумал аргумент.
-![[unknown_parameter.png]]
+
+![unknown_parameter](images/unknown_parameter.png)
+
 Просим его исправить, но чтобы ничего не сломалось, проверим самостоятельно документацию huggingface на использование таймаутов. Правильный синтаксис отправим GigaCode.
-![[fix_request.png]]
+
+![fix_request](images/fix_request.png)
+
 ```
 Ошибки исправлены:
 
@@ -256,14 +268,18 @@ width и height должны быть кратны 32
 
 Проверим работу приложения.
 Получаем новую ошибку.
-![[error_two.png]]
+
+![error_two](images/error_two.png)
+
 Тут еще проще - такая же ошибка возникала при первой итерации генерации тестового кода в начале лабораторной работы. ИИ обращается к устаревшей модели FLUX.1-dev, которую нужно заменить на актуальную FLUX.1-schnell. Попросим исправить.
 ```
 Исправлено! Добавил параметр model="black-forest-labs/FLUX.1-schnell" в вызов client.text_to_image(). Теперь приложение будет использовать правильную модель вместо устаревшей FLUX.1-dev.
 ```
 
 Новая ошибка.
- ![[error_three.png]]
+
+![error_three](images/error_three.png)
+
 Просим исправить.
 ```
 Проблема в том, что client.text_to_image() может возвращать не bytes, а уже объект PIL.Image.Image. Проверю документацию и исправлю код:
@@ -281,5 +297,5 @@ else:
 
 Запустим приложение снова.
 Успех.
-![[final_image.png]]
 
+![final_image](images/final_image.png)
